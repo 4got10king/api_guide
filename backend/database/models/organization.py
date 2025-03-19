@@ -1,6 +1,5 @@
-from sqlalchemy import Integer, String, ForeignKey, Table, Column
+from sqlalchemy import JSON, Integer, String, ForeignKey, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import List, Optional
 from app.schemas.organiztaion import OrganizationResponse
 from database.db_metadata import Base
 from database.models.mixin import IsActiveMixin, TimestampMixin
@@ -8,9 +7,12 @@ from database.models.mixin import IsActiveMixin, TimestampMixin
 organization_activities = Table(
     "organization_activities",
     Base.metadata,
-    Column("organization_id", Integer, ForeignKey("organizations.id"), primary_key=True),
+    Column(
+        "organization_id", Integer, ForeignKey("organizations.id"), primary_key=True
+    ),
     Column("activity_id", Integer, ForeignKey("activities.id"), primary_key=True),
 )
+
 
 class OrganizationORM(Base, IsActiveMixin, TimestampMixin):
     """ORM модель для таблицы organizations"""
@@ -19,12 +21,15 @@ class OrganizationORM(Base, IsActiveMixin, TimestampMixin):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
-    phone_numbers: Mapped[str] = mapped_column(String(1024), nullable=False) 
-    building_id: Mapped[int] = mapped_column(Integer, ForeignKey("buildings.id"), nullable=False)
+    phone_numbers: Mapped[list[str]] = mapped_column(JSON, nullable=False)
+    building_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("buildings.id"), nullable=False
+    )
 
-    # Отношения
     building = relationship("BuildingORM", back_populates="organizations")
-    activities = relationship("ActivityORM", secondary=organization_activities, back_populates="organizations")
+    activities = relationship(
+        "ActivityORM", secondary=organization_activities, back_populates="organizations"
+    )
 
     def get_schema(self) -> OrganizationResponse:
         return OrganizationResponse(

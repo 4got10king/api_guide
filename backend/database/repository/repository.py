@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import TypeVar
+from typing import Any, Optional, TypeVar, Union
 from uuid import UUID
 from pydantic import BaseModel
 
@@ -25,10 +25,18 @@ class SQLAlchemyRepository(AbstractRepository):
     def __init__(self, session: AsyncSession):
         self.session: AsyncSession = session
 
-    async def add_one(self, data: dict) -> RowMapping | None:
+    async def add_one(self, data: Union[dict, Any]) -> Optional[RowMapping]:
+        """Добавляет одну запись в базу данных"""
+        if not isinstance(data, dict):
+            data = {
+                key: getattr(data, key)
+                for key in data.__dict__
+                if not key.startswith("_")
+            }
+
         stmt = insert(self.model).values(**data).returning(literal_column("*"))
-        res = await self.session.execute(stmt)
-        return res.mappings().first()
+        result = await self.session.execute(stmt)
+        return result.mappings().first()
 
     async def edit_one(self, id: int, data: dict) -> RowMapping | None:
         stmt = (

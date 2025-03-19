@@ -1,6 +1,6 @@
-from fastapi import HTTPException
 from app.schemas.building import BuildingResponse
 from database.unitofwork import IUnitOfWork, UnitOfWork
+
 
 class BuildingService:
     @classmethod
@@ -8,7 +8,7 @@ class BuildingService:
         cls, uow: IUnitOfWork = UnitOfWork()
     ) -> list[BuildingResponse]:
         async with uow:
-            buildings = await uow.buildings.get_all()
+            buildings = await uow.building.get_all()
             return [BuildingResponse.model_validate(building) for building in buildings]
 
     @classmethod
@@ -16,5 +16,5 @@ class BuildingService:
         cls, lat: float, lon: float, radius: float, uow: IUnitOfWork = UnitOfWork()
     ) -> list[BuildingResponse]:
         async with uow:
-            buildings = await uow.buildings.get_in_radius(lat, lon, radius)
+            buildings = await uow.building.get_in_radius(lat, lon, radius)
             return [BuildingResponse.model_validate(building) for building in buildings]

@@ -7,6 +7,7 @@ migrate:
 
 run-server:
 	@echo "Starting server..."
+	@poetry run python3 seed.py
 	@poetry run python3 run.py
 
 check-style:

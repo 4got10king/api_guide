@@ -1,9 +1,9 @@
 from sqlalchemy import Integer, String, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import List
 from app.schemas.building import BuildingResponse
 from database.db_metadata import Base
 from database.models.mixin import IsActiveMixin, TimestampMixin
+
 
 class BuildingORM(Base, IsActiveMixin, TimestampMixin):
     """ORM модель для таблицы buildings"""
