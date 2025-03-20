@@ -9,6 +9,9 @@
 1) Клонируйте репозиторий:
 
 `git clone https://github.com/4got10king/api_guide.git`
+
+или
+
 `git@github.com:4got10king/api_guide.git`
 
 2) Настройте переменные окружения в файле .env по env.template, в той же директории, что и env.template:
