@@ -59,16 +59,27 @@ AsyncIO: для асинхронной обработки запросов и н
 ## Команды API
 
 GET - /activities
+
 GET - /activities/{id}
+
 GET - /activities/{id}/organizations
 
+
+
 GET - /buildings
+
 GET - /buildings/radius?lat={}&lon={}&radius={}
 
+
+
 GET - /organizations/{}
+
 POST - /organizations
+
 GET - /organizations/building/{}
+
 POST - /organizations/search
+
 
 
 ### Преимущества
