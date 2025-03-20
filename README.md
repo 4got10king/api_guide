@@ -24,18 +24,20 @@ BACKEND_SERVER__HEADERS=["*"]
 3) Поднимите контейнеры
 
 `docker-compose up`
+
+
 Также запуск без контейнеров:
 
-`cd backend`
-`poetry install`
-`poetry run alembic upgrade head`
+`cd backend` ->
+`poetry install` ->
+`poetry run alembic upgrade head` ->
 `poetry run python run.py`
 
-либо 
+либо(если есть make)
 
-`cd backend`
-`poetry install`
-`make migrate`
+`cd backend` ->
+`poetry install` ->
+`make migrate` ->
 `make run-server`
 
 Приложение запустится на том порте и хосте, котороый вы указали в .env
